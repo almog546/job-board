@@ -1,0 +1,29 @@
+.home {
+    text-align: center;
+    margin-top: 10rem;
+}
+.home h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+.exploreButton {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+.exploreButton:hover {
+    background-color: #333;
+}
+.description {
+    font-size: 1.2rem;
+    color: #555;
+}
+@media (max-width: 600px) {
+    .home {
+        margin: 5rem 1rem;
+    }
+}

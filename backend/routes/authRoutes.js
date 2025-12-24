@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const prisma = require('../prismaClient');
-const bcrypt = require('bcrypt');
+
 const { signup, login, me } = require('../controllers/authController');
 
 router.post('/signup', signup);

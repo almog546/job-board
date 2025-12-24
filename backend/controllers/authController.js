@@ -1,3 +1,6 @@
+const bcrypt = require('bcrypt');
+const prisma = require('../prismaClient');
+
 async function signup(req, res) {
     try {
         const { email, password, role, name } = req.body;
