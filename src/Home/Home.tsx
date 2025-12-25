@@ -30,6 +30,9 @@ export default function Home({ user }: HomeProps) {
                     <Link to="/jobs" className={styles.exploreButton}>
                         Explore Jobs
                     </Link>
+                    <Link to="/signup" className={styles.exploreButton}>
+                        Sign Up
+                    </Link>
                 </div>
             )}
         </>

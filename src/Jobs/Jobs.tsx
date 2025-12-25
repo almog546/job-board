@@ -4,5 +4,9 @@ type JobsProps = {
     user: any;
 };
 export default function Jobs({ user }: JobsProps) {
-    return <></>;
+    return (
+        <>
+            <div className={styles.jobs}>your jobs</div>
+        </>
+    );
 }
