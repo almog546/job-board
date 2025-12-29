@@ -5,12 +5,13 @@ import Header from './header/Header';
 import Jobs from './Jobs/Jobs';
 import Favorites from './Favorites/Favorites';
 import Dashboard from './Dashboard/Dashboard';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import Jobpage from './Jobpage/Jobpage';
 
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import Ceatejob from './Ceatejob/Ceatejob';
+import Createjob from './Createjob/Createjob';
 
 function App() {
     const [user, setUser] = useState(null);
@@ -38,6 +39,7 @@ function App() {
         <>
             <Header user={user} />
             <Routes>
+                <Route path="/jobs/:id" element={<Jobpage />} />
                 <Route path="/Signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/" element={<Home user={user} />} />
@@ -67,14 +69,14 @@ function App() {
                     }
                 />
                 <Route
-                    path="/Ceatejob"
+                    path="/Createjob"
                     element={
                         !user ? (
                             <Navigate to="/login" replace />
                         ) : user.role !== 'EMPLOYER' ? (
                             <Navigate to="/" replace />
                         ) : (
-                            <Ceatejob user={user} />
+                            <Createjob user={user} />
                         )
                     }
                 />

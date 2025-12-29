@@ -31,7 +31,7 @@ export default function Header({ user }: HeaderProps) {
             {user && user.role === 'EMPLOYER' && (
                 <div className={styles.header}>
                     <Link to="/">Home</Link>
-                    <Link to="/Ceatejob ">Create Job </Link>
+                    <Link to="/Createjob">Create Job </Link>
                     <Link to="/Dashboard ">Dashboard </Link>
                 </div>
             )}

@@ -14,9 +14,21 @@ model User {
   password  String
   role      Role
   createdAt DateTime @default(now())
+  jobs      Job[]   
 }
 
 enum Role {
   JOB_SEEKER
   EMPLOYER
+}
+model Job {
+  id          String   @id @default(cuid())
+  employerId  String
+  title       String
+  description String
+  location    String
+  createdAt   DateTime @default(now())
+  jobtype   String
+  isremote  Boolean  @default(false)
+  employer   User     @relation(fields: [employerId], references: [id])
 }
