@@ -1,13 +1,47 @@
+import { useEffect, useState } from 'react';
 import styles from './Favorites.module.css';
 
-type FavoritesProps = {
-    user: any;
-};
+export default function Favorites() {
+    const [favorites, setFavorites] = useState<any[]>([]);
 
-export default function Favorites({ user }: FavoritesProps) {
+    useEffect(() => {
+        async function fetchFavorites() {
+            try {
+                const res = await fetch(
+                    `${import.meta.env.VITE_API_URL}/api/favorites`,
+                    { credentials: 'include' }
+                );
+                if (res.ok) {
+                    const data = await res.json();
+                    setFavorites(data);
+                } else {
+                    console.error('Failed to fetch favorites');
+                }
+            } catch (error) {
+                console.error('Error fetching favorites:', error);
+            }
+        }
+        fetchFavorites();
+    }, []);
+
     return (
-        <>
-            <div className={styles.favorites}>your favorites</div>
-        </>
+        <div className={styles.favorites}>
+            <h2 className={styles.title}>Your Favorite Jobs</h2>
+            {favorites.length === 0 ? (
+                <p>No favorite jobs found.</p>
+            ) : (
+                <div className={styles.jobList}>
+                    {favorites.map((job) => (
+                        <div key={job.id} className={styles.jobItem}>
+                            <h2>{job.title}</h2>
+                            <p>{job.location}</p>
+                            <p>Type: {job.jobtype}</p>
+                            <p>Remote: {job.isremote ? 'Yes' : 'No'}</p>
+                            <button>Remove</button>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
     );
 }

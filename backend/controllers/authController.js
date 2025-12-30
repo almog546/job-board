@@ -62,6 +62,10 @@ async function login(req, res) {
         if (!passwordMatch) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
+        req.session.user = {
+            id: user.id,
+            role: user.role,
+        };
 
         req.session.userId = user.id;
 

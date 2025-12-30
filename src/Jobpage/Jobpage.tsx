@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 export default function Jobpage() {
     const [jobDetails, setJobDetails] = useState<any>(null);
+    const [addfavorites, setAddFavorites] = useState<any[]>([]);
     const { id } = useParams();
     useEffect(() => {
         async function fetchJobDetails() {
@@ -27,6 +28,19 @@ export default function Jobpage() {
     if (!jobDetails) {
         return <div>Loading...</div>;
     }
+    async function handleAddToFavorites() {
+        try {
+            const res = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/jobs/${id}`,
+                {
+                    method: 'POST',
+                    credentials: 'include',
+                }
+            );
+        } catch (error) {
+            console.error('Error adding to favorites:', error);
+        }
+    }
 
     return (
         <div className={styles.jobpage}>
@@ -35,7 +49,7 @@ export default function Jobpage() {
             <h3>Type: {jobDetails.jobtype}</h3>
             <p>{jobDetails.description}</p>
             <p>Remote: {jobDetails.isremote ? 'Yes' : 'No'}</p>
-            <button>Add to Favorites</button>
+            <button onClick={handleAddToFavorites}>Add to Favorites</button>
         </div>
     );
 }

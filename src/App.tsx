@@ -38,6 +38,7 @@ function App() {
     return (
         <>
             <Header user={user} />
+
             <Routes>
                 <Route path="/jobs/:id" element={<Jobpage />} />
                 <Route path="/Signup" element={<Signup />} />

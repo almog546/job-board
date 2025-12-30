@@ -1,5 +1,68 @@
 .favorites {
-    padding: 20px;
-    background-color: #f0f8ff;
-    margin-top: 10rem;
+    margin-top: 4rem;
+    height: calc(100vh - 4rem);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    width: 70rem;
+}
+.title {
+    grid-column: 1/3;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+.jobList {
+    grid-column: 1/3;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+.jobItem {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    text-align: center;
+}
+.jobItem h2 {
+    margin-bottom: 0.5rem;
+}
+.jobItem button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.jobItem button:hover {
+    background-color: #333;
+}
+@media (max-width: 600px) {
+    .favorites {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .jobList {
+        grid-template-columns: 1fr;
+    }
+    .jobItem {
+        margin: 0 auto;
+        width: 100%;
+    }
+}
+@media (max-width: 800px) {
+    .favorites {
+        width: 100%;
+    }
+}
+@media (max-width: 1400px) {
+    .favorites {
+        width: 100%;
+    }
 }

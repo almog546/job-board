@@ -31,6 +31,8 @@ async function jobs(req, res) {
     }
 }
 async function jobById(req, res) {
+    console.log(req.user);
+
     const jobid = req.params.id;
     try {
         const job = await prisma.job.findUnique({
@@ -43,5 +45,23 @@ async function jobById(req, res) {
         });
     }
 }
+async function addjobtoFavorites(req, res) {
+    const jobid = req.params.id;
+    const userId = req.session.userId;
 
-module.exports = { jobs, jobById };
+    try {
+        const favorite = await prisma.favorite.create({
+            data: {
+                jobId: jobid,
+                userId: userId,
+            },
+        });
+        res.status(201).json(favorite);
+    } catch (error) {
+        res.status(500).json({
+            error: 'An error occurred while adding the job to favorites.',
+        });
+    }
+}
+
+module.exports = { jobs, jobById, addjobtoFavorites };
