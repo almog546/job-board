@@ -29,6 +29,10 @@ export default function Jobpage() {
         return <div>Loading...</div>;
     }
     async function handleAddToFavorites() {
+        const alreadyAdded = addfavorites.includes(id);
+        if (alreadyAdded) {
+            return;
+        }
         try {
             const res = await fetch(
                 `${import.meta.env.VITE_API_URL}/api/jobs/${id}`,
@@ -37,6 +41,9 @@ export default function Jobpage() {
                     credentials: 'include',
                 }
             );
+            if (res.ok) {
+                setAddFavorites((prev) => [...prev, id]);
+            }
         } catch (error) {
             console.error('Error adding to favorites:', error);
         }
@@ -49,7 +56,12 @@ export default function Jobpage() {
             <h3>Type: {jobDetails.jobtype}</h3>
             <p>{jobDetails.description}</p>
             <p>Remote: {jobDetails.isremote ? 'Yes' : 'No'}</p>
-            <button onClick={handleAddToFavorites}>Add to Favorites</button>
+            <button onClick={handleAddToFavorites}>
+                {' '}
+                {addfavorites.includes(id)
+                    ? 'Already in Favorites'
+                    : 'Add to Favorites'}
+            </button>
         </div>
     );
 }

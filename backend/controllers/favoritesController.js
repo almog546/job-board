@@ -18,5 +18,22 @@ async function showfavorites(req, res) {
         });
     }
 }
+async function deletefavoritejob(req, res) {
+    const userId = req.session.userId;
+    const jobId = req.params.jobId;
+    try {
+        await prisma.favorite.deleteMany({
+            where: {
+                userId: userId,
+                jobId: jobId,
+            },
+        });
+        res.status(200).json({ message: 'Favorite job deleted successfully.' });
+    } catch (error) {
+        res.status(500).json({
+            error: 'An error occurred while deleting the favorite job.',
+        });
+    }
+}
 
-module.exports = { showfavorites };
+module.exports = { showfavorites, deletefavoritejob };

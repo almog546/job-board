@@ -21,14 +21,35 @@ export default function Favorites() {
                 console.error('Error fetching favorites:', error);
             }
         }
+
         fetchFavorites();
     }, []);
+    async function handleRemoveFavorite(jobId: any) {
+        try {
+            const res = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/favorites/${jobId}`,
+                {
+                    method: 'DELETE',
+                    credentials: 'include',
+                }
+            );
+            if (res.ok) {
+                setFavorites((prevFavorites) =>
+                    prevFavorites.filter((job) => job.id !== jobId)
+                );
+            } else {
+                console.error('Failed to remove favorite');
+            }
+        } catch (error) {
+            console.error('Error removing favorite:', error);
+        }
+    }
 
     return (
         <div className={styles.favorites}>
             <h2 className={styles.title}>Your Favorite Jobs</h2>
             {favorites.length === 0 ? (
-                <p>No favorite jobs found.</p>
+                <p className={styles.noFavorites}>No favorite jobs found.</p>
             ) : (
                 <div className={styles.jobList}>
                     {favorites.map((job) => (
@@ -37,7 +58,11 @@ export default function Favorites() {
                             <p>{job.location}</p>
                             <p>Type: {job.jobtype}</p>
                             <p>Remote: {job.isremote ? 'Yes' : 'No'}</p>
-                            <button>Remove</button>
+                            <button
+                                onClick={() => handleRemoveFavorite(job.id)}
+                            >
+                                Remove
+                            </button>
                         </div>
                     ))}
                 </div>

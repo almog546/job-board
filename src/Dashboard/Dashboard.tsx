@@ -6,7 +6,9 @@ type DashboardProps = {
 export default function Dashboard({ user }: DashboardProps) {
     return (
         <>
-            <div className={styles.dashboard}>your dashboard</div>
+            <div className={styles.dashboard}>
+                <button className={styles.createJobButton}>Create Job</button>
+            </div>
         </>
     );
 }
