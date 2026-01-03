@@ -21,5 +21,16 @@ function requireJobSeeker(req, res, next) {
 
     next();
 }
+function newrequireEmployer(req, res, next) {
+    if (!req.session.user) {
+        return res.json([]);
+    }
 
-module.exports = { requireEmployer, requireJobSeeker };
+    if (req.session.user.role !== 'EMPLOYER') {
+        return res.json([]);
+    }
+
+    next();
+}
+
+module.exports = { requireEmployer, requireJobSeeker, newrequireEmployer };

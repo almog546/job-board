@@ -15,6 +15,7 @@
     justify-content: baseline;
     font-size: 2rem;
     margin-bottom: 1rem;
+    align-self: flex-start;
 }
 .createJobButton {
     padding: 10px 20px;
@@ -34,16 +35,20 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 2.3rem;
     margin-bottom: 2rem;
     padding: 1rem;
     border: 1px solid #000000;
     border-radius: 4px;
-
-    width: 20rem;
+    width: 35rem;
+    height: auto;
 }
 .jobForm label {
     font-weight: bold;
+    margin-bottom: 0.5rem;
+    font-size: large;
+    display: flex;
+    align-self: center;
 }
 .jobForm input,
 .jobForm textarea,
@@ -53,8 +58,11 @@
     border: 1px solid #000000;
     border-radius: 4px;
 }
+.jobForm textarea {
+    resize: vertical;
+    min-height: 100px;
+}
 .jobForm button {
-    align-self: flex-start;
     padding: 0.5rem 1rem;
     font-size: 1rem;
     background-color: black;
@@ -71,9 +79,106 @@
 .checkboxField {
     margin-right: 0.5rem;
 }
-@media (max-width: 600px) {
+
+.myJobs {
+    grid-column: 2/3;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    justify-content: baseline;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+.myJobs button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-self: center;
+}
+.myJobs button:hover {
+    background-color: #333;
+}
+.myJobsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+
+    border-radius: 4px;
+    width: 60rem;
+}
+.noJobsMessage {
+    font-size: large;
+    text-align: center;
+    color: #555;
+}
+.jobItem {
+    border: 1px solid #000000;
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    font-size: large;
+}
+.jobActions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+@media (max-width: 1440px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+    .create,
+    .myJobs {
+        grid-column: 1/2;
+        width: 100%;
+    }
+    .jobForm {
+        width: 80%;
+    }
+    .myJobsList {
+        width: 80%;
+    }
+}
+@media (max-width: 640px) {
     .dashboard {
         padding: 10px;
         margin-top: 8rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .create,
+    .myJobs {
+        grid-column: 1/2;
+        width: 100%;
+    }
+    .jobForm {
+        width: 100%;
+    }
+    .myJobsList {
+        width: 100%;
+    }
+}
+@media (max-width: 400px) {
+    .jobForm {
+        padding: 0.5rem;
+    }
+    .jobForm label {
+        font-size: medium;
+    }
+    .jobForm input,
+    .jobForm textarea,
+    .jobForm select {
+        font-size: 0.9rem;
     }
 }

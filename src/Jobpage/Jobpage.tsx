@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
 import styles from './Jobpage.module.css';
 import { useParams } from 'react-router-dom';
+import { user } from '../../backend/prismaClient';
 
-export default function Jobpage() {
+type JobpageProps = {
+    user: any;
+};
+
+export default function Jobpage({ user }: JobpageProps) {
     const [jobDetails, setJobDetails] = useState<any>(null);
     const [addfavorites, setAddFavorites] = useState<any[]>([]);
     const { id } = useParams();
@@ -56,12 +61,13 @@ export default function Jobpage() {
             <h3>Type: {jobDetails.jobtype}</h3>
             <p>{jobDetails.description}</p>
             <p>Remote: {jobDetails.isremote ? 'Yes' : 'No'}</p>
-            <button onClick={handleAddToFavorites}>
-                {' '}
-                {addfavorites.includes(id)
-                    ? 'Already in Favorites'
-                    : 'Add to Favorites'}
-            </button>
+            {user?.role === 'JOB_SEEKER' && (
+                <button onClick={handleAddToFavorites}>
+                    {addfavorites.includes(id)
+                        ? 'Already in Favorites'
+                        : 'Add to Favorites'}
+                </button>
+            )}
         </div>
     );
 }

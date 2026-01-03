@@ -25,8 +25,8 @@ app.use(
     })
 );
 app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/', require('./routes/dashboardRoutes'));
-app.use('/api/', require('./routes/jobsRoutes'));
+app.use('/api/dashboard', require('./routes/dashboardRoutes'));
+app.use('/api/jobs', require('./routes/jobsRoutes'));
 app.use('/api/favorites', require('./routes/favoritesRoutes'));
 
 app.use((err, req, res, next) => {

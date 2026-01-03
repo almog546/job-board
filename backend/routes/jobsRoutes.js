@@ -8,13 +8,21 @@ const {
     addjobtoFavorites,
 } = require('../controllers/jobsController');
 const requireAuth = require('../middlewares/requireAuth');
-const { requireEmployer } = require('../middlewares/requiretypeofrole');
+const {
+    requireEmployer,
+    newrequireEmployer,
+} = require('../middlewares/requiretypeofrole');
 const { createJob } = require('../controllers/createJobController');
+const { myjobs } = require('../controllers/myjobsController');
+const { deleteJob } = require('../controllers/deleteJobController');
 
-router.get('/jobs', jobs);
-router.get('/jobs/:id', jobById);
+router.get('/', jobs);
+router.get('/me', newrequireEmployer, myjobs);
+router.get('/:id', jobById);
 
-router.post('/jobs', requireEmployer, createJob);
-router.post('/jobs/:id', requireAuth, addjobtoFavorites);
+router.post('/', requireEmployer, createJob);
+router.post('/:id', requireAuth, addjobtoFavorites);
+
+router.delete('/:id', requireEmployer, deleteJob);
 
 module.exports = router;

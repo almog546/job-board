@@ -40,7 +40,7 @@ function App() {
             <Header user={user} />
 
             <Routes>
-                <Route path="/jobs/:id" element={<Jobpage />} />
+                <Route path="/jobs/:id" element={<Jobpage user={user} />} />
                 <Route path="/Signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/" element={<Home user={user} />} />
