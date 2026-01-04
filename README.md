@@ -23,11 +23,11 @@ This is a full-stack job board application where employers can post and manage j
     <td><b>Management Dashboard</b></td>
   </tr>
   <tr>
-    <td><img src="./צילום מסך 2026-01-04 220400.png" width="450"></td>
-    <td><img src="./צילום מסך 2026-01-04 220233.png" width="450"></td>
+    <td><img src="./job-listings.png" width="450"></td>
+    <td><img src="./dashboard.png" width="450"></td>
   </tr>
   <tr>
     <td colspan="2" align="center"><b>Favorite Jobs Page</b><br>
-    <img src="./צילום מסך 2026-01-04 220502.png" width="450"></td>
+    <img src="./favorites.png" width="450"></td>
   </tr>
 </table>
