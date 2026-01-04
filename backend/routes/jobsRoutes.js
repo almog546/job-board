@@ -15,6 +15,7 @@ const {
 const { createJob } = require('../controllers/createJobController');
 const { myjobs } = require('../controllers/myjobsController');
 const { deleteJob } = require('../controllers/deleteJobController');
+const { editJob } = require('../controllers/editJobController');
 
 router.get('/', jobs);
 router.get('/me', newrequireEmployer, myjobs);
@@ -24,5 +25,7 @@ router.post('/', requireEmployer, createJob);
 router.post('/:id', requireAuth, addjobtoFavorites);
 
 router.delete('/:id', requireEmployer, deleteJob);
+
+router.put('/:id', requireEmployer, editJob);
 
 module.exports = router;

@@ -13,7 +13,16 @@ export default function Dashboard({ user }: DashboardProps) {
     const [showInput, setShowInput] = useState(false);
     const [showmyjobs, setShowMyJobs] = useState(false);
     const [myjobs, setMyJobs] = useState<any[]>([]);
-    const [jobToDelete, setJobToDelete] = useState<string | null>(null);
+    const [editingJobId, setEditingJobId] = useState<string | null>(null);
+    const [editedValues, setEditedValues] = useState({
+        title: '',
+        location: '',
+        description: '',
+        jobtype: '',
+        isremote: false,
+    });
+    const [showMessage, setShowMessage] = useState(false);
+    const [message, setMessage] = useState('');
 
     async function handleCreateJob() {
         try {
@@ -38,7 +47,7 @@ export default function Dashboard({ user }: DashboardProps) {
                 console.error(data.message);
                 return;
             }
-            alert('Job created successfully');
+            handleShowMessage('Job created successfully');
             setTitle('');
             setDescription('');
             setLocation('');
@@ -92,15 +101,82 @@ export default function Dashboard({ user }: DashboardProps) {
                 console.error(data.message);
                 return;
             }
-            alert('Job deleted successfully');
+            handleShowMessage('Job deleted successfully');
             setMyJobs((prev) => prev.filter((job) => job.id !== jobId));
         } catch (error) {
             console.error('Error deleting job:', error);
         }
     }
+    function startEditing(job: any) {
+        setEditingJobId(job.id);
+        setEditedValues({
+            title: job.title,
+            location: job.location,
+            description: job.description,
+            jobtype: job.jobtype,
+            isremote: job.isremote,
+        });
+    }
+    async function handleSaveEdit(jobId: string) {
+        try {
+            const res = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/jobs/${jobId}`,
+                {
+                    method: 'put',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(editedValues),
+                }
+            );
+            const data = await res.json();
+            if (!res.ok) {
+                console.error(data.message);
+                return;
+            }
+            handleShowMessage('Job updated successfully');
+            setMyJobs((prev) =>
+                prev.map((job) =>
+                    job.id === jobId ? { ...job, ...editedValues } : job
+                )
+            );
+            setEditingJobId(null);
+            setEditedValues({
+                title: '',
+                location: '',
+                description: '',
+                jobtype: '',
+                isremote: false,
+            });
+        } catch (error) {
+            console.error('Error updating job:', error);
+        }
+    }
+    async function handleCancelEdit(jobId: string) {
+        setEditingJobId(null);
+        setEditedValues({
+            title: '',
+            location: '',
+            description: '',
+            jobtype: '',
+            isremote: false,
+        });
+    }
+    function handleShowMessage(text: string) {
+        setMessage(text);
+        setShowMessage(true);
+
+        setTimeout(() => {
+            setShowMessage(false);
+        }, 1000);
+    }
 
     return (
         <>
+            {showMessage && (
+                <div className={styles.overlay}>
+                    <div className={styles.messageBox}>{message}</div>
+                </div>
+            )}
             <div className={styles.dashboard}>
                 <div className={styles.create}>
                     <button
@@ -176,30 +252,148 @@ export default function Dashboard({ user }: DashboardProps) {
                                         key={job.id}
                                         className={styles.jobItem}
                                     >
-                                        <h3>{job.title}</h3>
-                                        <p>{job.description}</p>
-                                        <p>{job.location}</p>
-                                        <p>{job.jobtype}</p>
-                                        <p>
-                                            {job.isremote
-                                                ? 'Remote'
-                                                : 'On-site'}
-                                        </p>
-                                        <div className={styles.jobActions}>
-                                            <button
-                                                className={styles.editButton}
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                className={styles.deleteButton}
-                                                onClick={() =>
-                                                    handleDeleteJob(job.id)
-                                                }
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
+                                        {editingJobId === job.id ? (
+                                            <div className={styles.editJobForm}>
+                                                <input
+                                                    type="text"
+                                                    value={editedValues.title}
+                                                    onChange={(e) =>
+                                                        setEditedValues({
+                                                            ...editedValues,
+                                                            title: e.target
+                                                                .value,
+                                                        })
+                                                    }
+                                                    className={
+                                                        styles.inputField
+                                                    }
+                                                />
+                                                <textarea
+                                                    value={
+                                                        editedValues.description
+                                                    }
+                                                    onChange={(e) =>
+                                                        setEditedValues({
+                                                            ...editedValues,
+                                                            description:
+                                                                e.target.value,
+                                                        })
+                                                    }
+                                                    className={
+                                                        styles.textareaField
+                                                    }
+                                                />
+                                                <input
+                                                    type="text"
+                                                    value={
+                                                        editedValues.location
+                                                    }
+                                                    onChange={(e) =>
+                                                        setEditedValues({
+                                                            ...editedValues,
+                                                            location:
+                                                                e.target.value,
+                                                        })
+                                                    }
+                                                    className={
+                                                        styles.inputField
+                                                    }
+                                                />
+                                                <input
+                                                    type="text"
+                                                    value={editedValues.jobtype}
+                                                    onChange={(e) =>
+                                                        setEditedValues({
+                                                            ...editedValues,
+                                                            jobtype:
+                                                                e.target.value,
+                                                        })
+                                                    }
+                                                    className={
+                                                        styles.inputField
+                                                    }
+                                                />
+                                                <label>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={
+                                                            editedValues.isremote
+                                                        }
+                                                        onChange={(e) =>
+                                                            setEditedValues({
+                                                                ...editedValues,
+                                                                isremote:
+                                                                    e.target
+                                                                        .checked,
+                                                            })
+                                                        }
+                                                    />
+                                                    Remote
+                                                </label>
+                                                <button
+                                                    className={
+                                                        styles.saveButton
+                                                    }
+                                                    onClick={() =>
+                                                        handleSaveEdit(job.id)
+                                                    }
+                                                >
+                                                    {' '}
+                                                    Save
+                                                </button>
+                                                <button
+                                                    className={
+                                                        styles.cancelButton
+                                                    }
+                                                    onClick={() =>
+                                                        handleCancelEdit(job.id)
+                                                    }
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <h3>{job.title}</h3>
+                                                <p>{job.description}</p>
+                                                <p>{job.location}</p>
+                                                <p>{job.jobtype}</p>
+                                                <p>
+                                                    {job.isremote
+                                                        ? 'Remote'
+                                                        : 'On-site'}
+                                                </p>
+                                                <div
+                                                    className={
+                                                        styles.jobActions
+                                                    }
+                                                >
+                                                    <button
+                                                        className={
+                                                            styles.editButton
+                                                        }
+                                                        onClick={() =>
+                                                            startEditing(job)
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </button>
+
+                                                    <button
+                                                        className={
+                                                            styles.deleteButton
+                                                        }
+                                                        onClick={() =>
+                                                            handleDeleteJob(
+                                                                job.id
+                                                            )
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                 ))
                             )}
