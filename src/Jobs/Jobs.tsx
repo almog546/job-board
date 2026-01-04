@@ -10,6 +10,7 @@ export default function Jobs({ user }: JobsProps) {
     const [jobs, setJobs] = useState<any[]>([]);
     const [input, setInput] = useState('');
     const [filteredJobs, setFilteredJobs] = useState<any[]>([]);
+    const [shownmore, setShownmore] = useState(10);
 
     useEffect(() => {
         async function fetchJobs() {
@@ -51,6 +52,9 @@ export default function Jobs({ user }: JobsProps) {
         );
     }
     const jobsToShow = filteredJobs.length > 0 ? filteredJobs : jobs;
+    function handleLoadMore() {
+        setShownmore(shownmore + 10);
+    }
 
     return (
         <div className={styles.jobs}>
@@ -69,20 +73,28 @@ export default function Jobs({ user }: JobsProps) {
                 </div>
             </div>
             <div className={styles.jobList}>
-                {jobsToShow.map((job) => (
-                    <div key={job.id} className={styles.jobCard}>
-                        <h2>{job.title}</h2>
-                        <p>{job.location}</p>
-                        <p>{job.description}</p>
+                {jobsToShow
+                    .filter((job, index) => index < shownmore)
+                    .map((job) => (
+                        <div key={job.id} className={styles.jobCard}>
+                            <h3>{job.title}</h3>
+                            <p>{job.location}</p>
+                            <p>{job.description}</p>
 
-                        <Link
-                            to={`/jobs/${job.id}`}
-                            className={styles.viewDetailsButton}
-                        >
-                            View Details
-                        </Link>
-                    </div>
-                ))}
+                            <Link
+                                to={`/jobs/${job.id}`}
+                                className={styles.viewDetailsButton}
+                            >
+                                View Details
+                            </Link>
+                        </div>
+                    ))}
+                <button
+                    className={styles.loadMoreButton}
+                    onClick={handleLoadMore}
+                >
+                    load more
+                </button>
             </div>
         </div>
     );
