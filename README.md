@@ -1,4 +1,4 @@
-# Job Board 💼
+# Job Board 
 
 ### Live Demo
 ![App Demo](./Animation.gif)
